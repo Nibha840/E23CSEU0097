@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Log } = require("../../../logging_middleware/src");
+const { Log } = require("../lib/logging");
 
 // POST /api/log - proxy endpoint for frontend logging
 router.post("/", async (req, res) => {

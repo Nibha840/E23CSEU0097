@@ -7,7 +7,7 @@ require("dotenv").config();
 const notificationRoutes = require("./routes/notificationRoutes");
 const logRoutes = require("./routes/logRoutes");
 const { loggingMiddleware } = require("./middleware/loggingMiddleware");
-const { Log } = require("../../logging_middleware/src");
+const { Log } = require("./lib/logging");
 
 const app = express();
 const server = http.createServer(app);

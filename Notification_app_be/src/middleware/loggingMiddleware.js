@@ -1,4 +1,4 @@
-const { Log } = require("../../../logging_middleware/src");
+const { Log } = require("../lib/logging");
 
 /**
  * Express middleware that logs every incoming HTTP request
