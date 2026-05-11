@@ -1,6 +1,6 @@
 const db = require("../config/db");
-const { Log } = require("../../../logging_middleware/src");
-const getAuthToken = require("../../../logging_middleware/src/services/authService");
+const { Log } = require("../logging");
+const getAuthToken = require("../logging/services/authService");
 const axios = require("axios");
 
 const NOTIFICATIONS_URL = "http://4.224.186.213/evaluation-service/notifications";
