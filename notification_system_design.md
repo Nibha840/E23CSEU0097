@@ -520,3 +520,14 @@ priority_score = type_weight × 1000 + recency_score
 - **Maintaining Top 10:** When new notifications come in, simply insert and re-extract — no need to re-sort the entire list
 
 See `Notification_app_be/src/utils/priorityInbox.js` for the working implementation.
+
+
+SCREENSHOTS
+<img width="1851" height="925" alt="image" src="https://github.com/user-attachments/assets/9ff5d433-3ace-4c11-9c00-47bc31feef8d" />
+
+<img width="1432" height="901" alt="image" src="https://github.com/user-attachments/assets/ee9e9b4b-62ec-4c9a-ba1e-3a2bce9900c9" />
+
+<img width="1759" height="956" alt="image" src="https://github.com/user-attachments/assets/35eac4c8-df0f-4c01-a7f5-8d8bec579fd1" />
+
+<img width="1413" height="905" alt="image" src="https://github.com/user-attachments/assets/cb8c7bff-9a22-4440-831d-4bcd58ea9437" />
+
