@@ -1,0 +1,128 @@
+.notification-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  position: relative;
+  transition: var(--transition);
+  animation: slideIn 0.4s ease both;
+}
+
+.notification-card:hover {
+  background: var(--bg-hover);
+  border-color: rgba(88, 166, 255, 0.15);
+  box-shadow: var(--shadow-sm);
+}
+
+.notification-card.unread {
+  background: rgba(28, 35, 51, 0.9);
+  border-left: 3px solid var(--accent-blue);
+}
+
+.notification-card.read {
+  opacity: 0.7;
+}
+
+.notification-card.read:hover {
+  opacity: 1;
+}
+
+.unread-indicator {
+  position: absolute;
+  top: 20px;
+  left: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-blue);
+}
+
+.card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.type-badge.event {
+  background: rgba(188, 140, 255, 0.12);
+  color: var(--event-color);
+  border: 1px solid rgba(188, 140, 255, 0.25);
+}
+
+.type-badge.result {
+  background: rgba(63, 185, 80, 0.12);
+  color: var(--result-color);
+  border: 1px solid rgba(63, 185, 80, 0.25);
+}
+
+.type-badge.placement {
+  background: rgba(210, 153, 34, 0.12);
+  color: var(--placement-color);
+  border: 1px solid rgba(210, 153, 34, 0.25);
+}
+
+.type-icon {
+  font-size: 14px;
+}
+
+.card-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.card-message {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.btn-read {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-read:hover {
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+@media (max-width: 480px) {
+  .notification-card { padding: 14px 16px; }
+  .card-message { font-size: 13px; }
+}

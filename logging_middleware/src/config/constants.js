@@ -1,43 +1,37 @@
-const VALID_STACKS = [
-  "backend",
-  "frontend"
-]
+const VALID_STACKS = ["backend", "frontend"];
 
-const VALID_LEVELS = [
-  "debug",
-  "info",
-  "warn",
-  "error",
-  "fatal"
-]
+const VALID_LEVELS = ["debug", "info", "warn", "error", "fatal"];
+
+const BACKEND_PACKAGES = [
+  "handler",
+  "repository",
+  "route",
+  "service"
+];
+
+const FRONTEND_PACKAGES = [
+  "api",
+  "component",
+  "hook",
+  "page",
+  "state",
+  "style"
+];
 
 const SHARED_PACKAGES = [
   "auth",
   "config",
   "middleware",
   "utils"
-]
+];
 
-const BACKEND_PACKAGES = [
-  "controller",
-  "service",
-  "route",
-  "repository",
-  "db"
-]
-
-const FRONTEND_PACKAGES = [
-  "component",
-  "page",
-  "hook",
-  "api",
-  "state"
-]
+const ALL_PACKAGES = [...BACKEND_PACKAGES, ...FRONTEND_PACKAGES, ...SHARED_PACKAGES];
 
 module.exports = {
   VALID_STACKS,
   VALID_LEVELS,
-  SHARED_PACKAGES,
   BACKEND_PACKAGES,
-  FRONTEND_PACKAGES
-}
+  FRONTEND_PACKAGES,
+  SHARED_PACKAGES,
+  ALL_PACKAGES
+};

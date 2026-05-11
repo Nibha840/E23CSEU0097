@@ -1,8 +1,19 @@
-const validateInputs = require("./utils/logger")
+const { Log } = require("./utils/logger");
+const {
+  VALID_STACKS,
+  VALID_LEVELS,
+  BACKEND_PACKAGES,
+  FRONTEND_PACKAGES,
+  SHARED_PACKAGES,
+  ALL_PACKAGES
+} = require("./config/constants");
 
-try {
-  validateInputs("backend", "info")
-  console.log("Validation successful")
-} catch (error) {
-  console.log(error.message)
-}
+module.exports = {
+  Log,
+  VALID_STACKS,
+  VALID_LEVELS,
+  BACKEND_PACKAGES,
+  FRONTEND_PACKAGES,
+  SHARED_PACKAGES,
+  ALL_PACKAGES
+};
