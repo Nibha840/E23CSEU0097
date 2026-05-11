@@ -10,6 +10,7 @@ import "./App.css";
 
 function App() {
   const [notifications, setNotifications] = useState([]);
+  const [allNotifications, setAllNotifications] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -20,16 +21,23 @@ function App() {
     try {
       setLoading(true);
       setError(null);
-      const filters = {};
-      if (activeFilter !== "All") filters.type = activeFilter;
 
-      const data = await getNotifications(filters);
-      setNotifications(data.notifications || []);
+      // Always fetch all notifications for stats
+      const allData = await getNotifications({});
+      setAllNotifications(allData.notifications || []);
+
+      // Fetch filtered notifications for display
+      if (activeFilter !== "All") {
+        const filteredData = await getNotifications({ type: activeFilter });
+        setNotifications(filteredData.notifications || []);
+      } else {
+        setNotifications(allData.notifications || []);
+      }
 
       const countData = await getUnreadCount();
       setUnreadCount(countData.unreadCount || 0);
 
-      await Log("frontend", "info", "page", `Loaded ${data.count} notifications, filter: ${activeFilter}`);
+      await Log("frontend", "info", "page", `Loaded notifications, filter: ${activeFilter}`);
     } catch (err) {
       setError("Failed to load notifications");
       await Log("frontend", "error", "page", `Failed to load notifications: ${err.message}`);
@@ -107,11 +115,11 @@ function App() {
   }, []);
 
   const stats = {
-    total: notifications.length,
+    total: allNotifications.length,
     unread: unreadCount,
-    events: notifications.filter((n) => n.type === "Event").length,
-    results: notifications.filter((n) => n.type === "Result").length,
-    placements: notifications.filter((n) => n.type === "Placement").length
+    events: allNotifications.filter((n) => n.type === "Event").length,
+    results: allNotifications.filter((n) => n.type === "Result").length,
+    placements: allNotifications.filter((n) => n.type === "Placement").length
   };
 
   return (
