@@ -35,7 +35,7 @@ const fetchNotifications = async (req, res) => {
 
     const [rows] = await db.query(query, params);
 
-    await Log("backend", "info", "handler", `Fetched ${rows.length} notifications with filters: type=${type || "all"}, is_read=${is_read || "all"}`);
+    Log("backend", "info", "handler", `Fetched ${rows.length} notifications with filters: type=${type || "all"}, is_read=${is_read || "all"}`).catch(() => {});
 
     res.json({
       success: true,
@@ -43,7 +43,8 @@ const fetchNotifications = async (req, res) => {
       notifications: rows
     });
   } catch (error) {
-    await Log("backend", "error", "handler", `Failed to fetch notifications: ${error.message}`).catch(() => {});
+    Log("backend", "error", "handler", `Failed to fetch notifications: ${error.message}`).catch(() => {});
+    console.error("fetchNotifications error:", error.message);
     res.status(500).json({ success: false, message: "Failed to fetch notifications" });
   }
 };
@@ -58,14 +59,15 @@ const getNotificationById = async (req, res) => {
     const [rows] = await db.query("SELECT * FROM notifications WHERE id = ?", [id]);
 
     if (rows.length === 0) {
-      await Log("backend", "warn", "handler", `Notification not found: ${id}`);
+      Log("backend", "warn", "handler", `Notification not found: ${id}`).catch(() => {});
       return res.status(404).json({ success: false, message: "Notification not found" });
     }
 
-    await Log("backend", "info", "handler", `Fetched notification: ${id}`);
+    Log("backend", "info", "handler", `Fetched notification: ${id}`).catch(() => {});
     res.json({ success: true, notification: rows[0] });
   } catch (error) {
-    await Log("backend", "error", "handler", `Failed to get notification: ${error.message}`).catch(() => {});
+    Log("backend", "error", "handler", `Failed to get notification: ${error.message}`).catch(() => {});
+    console.error("getNotificationById error:", error.message);
     res.status(500).json({ success: false, message: "Failed to get notification" });
   }
 };
@@ -76,9 +78,15 @@ const getNotificationById = async (req, res) => {
  */
 const syncNotifications = async (req, res) => {
   try {
-    await Log("backend", "info", "service", "Starting notification sync from upstream service");
+    Log("backend", "info", "service", "Starting notification sync from upstream service").catch(() => {});
 
-    const token = await getAuthToken();
+    let token;
+    try {
+      token = await getAuthToken();
+    } catch (authErr) {
+      console.error("Auth failed for sync:", authErr.message);
+      return res.status(500).json({ success: false, message: "Auth failed: " + authErr.message });
+    }
 
     const response = await axios.get(NOTIFICATIONS_URL, {
       headers: { Authorization: `Bearer ${token}` }
@@ -101,7 +109,7 @@ const syncNotifications = async (req, res) => {
       io.emit("notifications-synced", { count: newCount });
     }
 
-    await Log("backend", "info", "service", `Sync complete: ${newCount} new notifications out of ${notifications.length} total`);
+    Log("backend", "info", "service", `Sync complete: ${newCount} new notifications out of ${notifications.length} total`).catch(() => {});
 
     res.json({
       success: true,
@@ -110,7 +118,8 @@ const syncNotifications = async (req, res) => {
       totalCount: notifications.length
     });
   } catch (error) {
-    await Log("backend", "error", "service", `Sync failed: ${error.message}`).catch(() => {});
+    Log("backend", "error", "service", `Sync failed: ${error.message}`).catch(() => {});
+    console.error("syncNotifications error:", error.message);
     res.status(500).json({ success: false, message: "Sync failed: " + error.message });
   }
 };
@@ -131,10 +140,11 @@ const markAsRead = async (req, res) => {
     const io = req.app.get("io");
     if (io) io.emit("notification-read", { id });
 
-    await Log("backend", "info", "handler", `Marked notification as read: ${id}`);
+    Log("backend", "info", "handler", `Marked notification as read: ${id}`).catch(() => {});
     res.json({ success: true, message: "Notification marked as read" });
   } catch (error) {
-    await Log("backend", "error", "handler", `Failed to mark as read: ${error.message}`).catch(() => {});
+    Log("backend", "error", "handler", `Failed to mark as read: ${error.message}`).catch(() => {});
+    console.error("markAsRead error:", error.message);
     res.status(500).json({ success: false, message: "Failed to mark as read" });
   }
 };
@@ -150,14 +160,15 @@ const markAllRead = async (req, res) => {
     const io = req.app.get("io");
     if (io) io.emit("all-notifications-read", {});
 
-    await Log("backend", "info", "handler", `Marked all notifications as read. Updated: ${result.affectedRows}`);
+    Log("backend", "info", "handler", `Marked all notifications as read. Updated: ${result.affectedRows}`).catch(() => {});
     res.json({
       success: true,
       message: "All notifications marked as read",
       updatedCount: result.affectedRows
     });
   } catch (error) {
-    await Log("backend", "error", "handler", `Failed to mark all as read: ${error.message}`).catch(() => {});
+    Log("backend", "error", "handler", `Failed to mark all as read: ${error.message}`).catch(() => {});
+    console.error("markAllRead error:", error.message);
     res.status(500).json({ success: false, message: "Failed to mark all as read" });
   }
 };
@@ -171,10 +182,11 @@ const getUnreadCount = async (req, res) => {
     const [rows] = await db.query("SELECT COUNT(*) AS unread_count FROM notifications WHERE is_read = FALSE");
     const unreadCount = rows[0].unread_count;
 
-    await Log("backend", "info", "handler", `Unread count fetched: ${unreadCount}`);
+    Log("backend", "info", "handler", `Unread count fetched: ${unreadCount}`).catch(() => {});
     res.json({ success: true, unreadCount });
   } catch (error) {
-    await Log("backend", "error", "handler", `Failed to get unread count: ${error.message}`).catch(() => {});
+    Log("backend", "error", "handler", `Failed to get unread count: ${error.message}`).catch(() => {});
+    console.error("getUnreadCount error:", error.message);
     res.status(500).json({ success: false, message: "Failed to get unread count" });
   }
 };
