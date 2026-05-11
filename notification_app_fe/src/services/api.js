@@ -7,31 +7,31 @@ export async function getNotifications(filters = {}) {
   if (filters.type) params.append("type", filters.type);
   if (filters.is_read !== undefined) params.append("is_read", filters.is_read);
 
-  const res = await axios.get(`${API_BASE}/notifications?${params.toString()}`);
+  const res = await axios.get(`${API_BASE}/api/notifications?${params.toString()}`);
   return res.data;
 }
 
 export async function getNotificationById(id) {
-  const res = await axios.get(`${API_BASE}/notifications/${id}`);
+  const res = await axios.get(`${API_BASE}/api/notifications/${id}`);
   return res.data;
 }
 
 export async function syncNotifications() {
-  const res = await axios.post(`${API_BASE}/notifications/sync`);
+  const res = await axios.post(`${API_BASE}/api/notifications/sync`);
   return res.data;
 }
 
 export async function markAsRead(id) {
-  const res = await axios.patch(`${API_BASE}/notifications/${id}/read`);
+  const res = await axios.patch(`${API_BASE}/api/notifications/${id}/read`);
   return res.data;
 }
 
 export async function markAllRead() {
-  const res = await axios.patch(`${API_BASE}/notifications/mark-all-read`);
+  const res = await axios.patch(`${API_BASE}/api/notifications/mark-all-read`);
   return res.data;
 }
 
 export async function getUnreadCount() {
-  const res = await axios.get(`${API_BASE}/notifications/unread-count`);
+  const res = await axios.get(`${API_BASE}/api/notifications/unread-count`);
   return res.data;
 }

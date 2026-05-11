@@ -12,7 +12,8 @@ export async function Log(stack, level, pkg, message) {
     if (!VALID_STACKS.includes(stack)) return;
     if (!VALID_LEVELS.includes(level)) return;
 
-    await axios.post("/api/log", {
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    await axios.post(`${API_BASE}/api/log`, {
       stack,
       level,
       package: pkg,
